@@ -19,6 +19,7 @@ import os
 
 import tornado.ioloop
 import tornado.web
+import tornado.template
 
 
 class MainHandler(tornado.web.RequestHandler):
