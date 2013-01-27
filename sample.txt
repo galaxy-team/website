@@ -1,0 +1,11 @@
+[21:55] <+mrout> Taneb: welcome
+[21:55] <+Taneb> Hey
+[21:55] <+mrout> drama has occurred. :(
+[21:56] <+Taneb> I saw some of it
+[21:56] <+Taneb> What was the result?
+[21:57] <+mrout> jdiez left
+[21:57] <+mrout> semi-permanently.
+[21:58] <+mrout> in the words of Stary2001, he pulled a SirCmpwn
+[21:58] <+mrout> DCPUToolchain2 no longer exists.
+[21:58] <+mrout> hachque has said that we can't use that name for a C++ toolchain
+[21:59] <+mrout> so now it's galaxy
