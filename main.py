@@ -21,6 +21,8 @@ import tornado.ioloop
 import tornado.web
 import tornado.template
 
+# import logging
+
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 
 
@@ -31,6 +33,8 @@ render = lambda handler, name, values: loader.load(name).generate(static_url=han
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
+        print(os.getcwd())
+        print(os.listdir(template_dir))
         self.write(render(self, 'home.html', {}))
 
 
