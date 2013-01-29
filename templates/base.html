@@ -1,90 +1,64 @@
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>{% block title %}{% end %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}{% end %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
 
-    <!-- Le styles -->
-    <link href="{{ static_url("css/bootstrap.css") }}" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 40px;
-        padding-bottom: 40px;
-        background-color: #f5f5f5;
-      }
+        <!-- Le styles -->
+        <link href="{{ static_url("css/bootstrap.css") }}" rel="stylesheet">
+        <link href="{{ static_url("css/custom.css") }}" rel="stylesheet">
+        <link href="{{ static_url("css/bootstrap-responsive.css") }}" rel="stylesheet">
 
-      .form-signin {
-        max-width: 300px;
-        padding: 19px 29px 29px;
-        margin: 0 auto 20px;
-        background-color: #fff;
-        border: 1px solid #e5e5e5;
-        -webkit-border-radius: 5px;
-           -moz-border-radius: 5px;
-                border-radius: 5px;
-        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-                box-shadow: 0 1px 2px rgba(0,0,0,.05);
-      }
-      .form-signin .form-signin-heading,
-      .form-signin .checkbox {
-        margin-bottom: 10px;
-      }
-      .form-signin input[type="text"],
-      .form-signin input[type="password"] {
-        font-size: 16px;
-        height: auto;
-        margin-bottom: 15px;
-        padding: 7px 9px;
-      }
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 
-    </style>
-    <link href="{{ static_url("css/bootstrap-responsive.css") }}" rel="stylesheet">
+        <!-- Fav and touch icons -->
+        <!-- <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/ico/apple-touch-icon-144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/ico/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/ico/apple-touch-icon-72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="/ico/apple-touch-icon-57-precomposed.png">
+                   <link rel="shortcut icon" href="/ico/favicon.png"> -->
+    </head>
 
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <body>
 
-    <!-- Fav and touch icons -->
-    <!-- <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="/ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="/ico/favicon.png"> -->
-  </head>
+        <div class="container">
+            <header>
+                <h1><a href="#">Galaxy</a></h1>
+                <nav>
+                    <a type="button" class="btn btn-inverse" href="#jupiter">Jupitor</a>
+                    <a type="button" class="btn btn-inverse" href="#saturn">Saturn</a>
+                    <a type="button" class="btn btn-inverse" href="#pluto">Pluto</a>
+                </nav>
+            </header>
+            {% block content %}
+            {% end %}
+        </div> <!-- /container -->
 
-  <body>
-
-    <div class="container">
-      {% block content %}
-      {% end %}
-    </div> <!-- /container -->
-
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="{{ static_url("js/jquery-1.9.0-min.js") }}"></script>
-    <script src="{{ static_url("js/bootstrap.js") }}"></script>
-    <!--
-    <script src="/js/jquery.js"></script>
-    <script src="/js/bootstrap-transition.js"></script>
-    <script src="/js/bootstrap-alert.js"></script>
-    <script src="/js/bootstrap-modal.js"></script>
-    <script src="/js/bootstrap-dropdown.js"></script>
-    <script src="/js/bootstrap-scrollspy.js"></script>
-    <script src="/js/bootstrap-tab.js"></script>
-    <script src="/js/bootstrap-tooltip.js"></script>
-    <script src="/js/bootstrap-popover.js"></script>
-    <script src="/js/bootstrap-button.js"></script>
-    <script src="/js/bootstrap-collapse.js"></script>
-    <script src="/js/bootstrap-carousel.js"></script>
-    <script src="/js/bootstrap-typeahead.js"></script>
-    -->
-
-  </body>
+        <!-- Le javascript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="{{ static_url("js/jquery-1.9.0-min.js") }}"></script>
+        <script src="{{ static_url("js/bootstrap.js") }}"></script>
+        <!--
+        <script src="/js/jquery.js"></script>
+        <script src="/js/bootstrap-transition.js"></script>
+        <script src="/js/bootstrap-alert.js"></script>
+        <script src="/js/bootstrap-modal.js"></script>
+        <script src="/js/bootstrap-dropdown.js"></script>
+        <script src="/js/bootstrap-scrollspy.js"></script>
+        <script src="/js/bootstrap-tab.js"></script>
+        <script src="/js/bootstrap-tooltip.js"></script>
+        <script src="/js/bootstrap-popover.js"></script>
+        <script src="/js/bootstrap-button.js"></script>
+        <script src="/js/bootstrap-collapse.js"></script>
+        <script src="/js/bootstrap-carousel.js"></script>
+        <script src="/js/bootstrap-typeahead.js"></script>
+        -->
+    </body>
 </html>

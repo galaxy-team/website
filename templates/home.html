@@ -1,21 +1,29 @@
 {% extends "base.html" %}
-{% block title %}Test A Site{% end %}
+{% block title %}Galaxy{% end %}
 {% block content %}
+    <div class="enclosure space_below">
+        <p>
+            <h4>
+                Galaxy is a toolchain envisioned to be;
+            </h4>
+            <ul>
+                <li>clean</li>
+                <li>easy to use</li>
+                <li>spec compliant</li>
+                <li>written to take advantage of the new features in C++11 (and beyond)</li>
+            </ul>
+            <!-- It's last incarnation, the DCPUToolchain, was deemed &lt;insert bad stuff about DCPUToolchain here&gt; -->
+        </p>
+    </div>
 
-
-    <h1>Galaxy</h1>
-    <p><h3>Synopsis &amp; Reasoning</h3>
-        [21:55] &lt;+mrout&gt; Taneb: welcome<br />
-        [21:55] &lt;+Taneb&gt; Hey<br />
-        [21:55] &lt;+mrout&gt; drama has occurred. :(<br />
-        [21:56] &lt;+Taneb&gt; I saw some of it<br />
-        [21:56] &lt;+Taneb&gt; What was the result?<br />
-        [21:57] &lt;+mrout&gt; jdiez left<br />
-        [21:57] &lt;+mrout&gt; semi-permanently.<br />
-        [21:58] &lt;+mrout&gt; in the words of Stary2001, he pulled a SirCmpwn<br />
-        [21:58] &lt;+mrout&gt; DCPUToolchain2 no longer exists.<br />
-        [21:58] &lt;+mrout&gt; hachque has said that we can't use that name for a C++ toolchain<br />
-        [21:59] &lt;+mrout&gt; so now it's galaxy<br />
-    </p>
-
+    <div class="enclosure space_below">
+        <p>
+            <h4>Roadmap</h4>
+            <ol>
+                <li><attr title="Jupitor">Assembler</attr></li>
+                <li><attr title="Saturn">Emulator</attr></li>
+                <li><attr title="Pluto">Linker</attr></li>
+            </ol>
+        </p>
+    </div>
 {% end %}

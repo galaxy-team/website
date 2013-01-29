@@ -1,0 +1,64 @@
+header {
+    font-weight: 5px;
+    width: 100%;
+    padding-top: 6px;
+    padding-bottom: 20px;
+    padding-left: 15px;
+    color: white;
+}
+
+header a:hover{
+    color: #B3B1B1;;
+    text-decoration: none;
+}
+
+header a:active{
+    color: #B3B1B1;;
+}
+
+header a{
+    color: #B3B1B1;
+}
+
+
+nav {
+    list-style: none;
+    float: right;
+    margin-top: -32px;
+}
+
+body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #f5f5f5;
+    background-image: url('/static/img/black_lozenge.png')
+}
+
+.container {
+
+}
+
+.space_below {
+    margin-bottom: 10px;
+}
+
+
+.enclosure {
+    width: 100%;
+    padding: 19px 29px 29px;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+    box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+
+.form-signin input[type="text"], .form-signin input[type="password"] {
+    font-size: 16px;
+    height: auto;
+    margin-bottom: 15px;
+    padding: 7px 9px;
+}
