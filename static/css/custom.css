@@ -7,22 +7,21 @@ header {
     color: white;
 }
 
-header a:hover{
+header a:hover {
     color: #B3B1B1;;
     text-decoration: none;
 }
 
-header a:active{
+header a:active {
     color: #B3B1B1;;
 }
 
-header a{
+header a {
     color: #B3B1B1;
 }
 
-
 nav {
-    list-style: none;
+    /*list-style: none;*/
     float: right;
     margin-top: -32px;
 }
