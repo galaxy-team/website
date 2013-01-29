@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright (C) 2013  Galaxy Team
+# Copyright (C) 2013 Galaxy Team
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -21,18 +21,28 @@ import tornado.ioloop
 import tornado.web
 import tornado.template
 
-loader = tornado.template.Loader(
-    os.path.join(os.getcwd(), 'templates'))
+template_dir = os.path.join(os.getcwd(), 'templates')
+
+
+loader = tornado.template.Loader(template_dir)
+
+render = lambda handler, name, values: loader.load(name).generate(static_url=handler.static_url, **values)
 
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
-        loader.load("test.html").generate(myvalue="XXX")
-        self.write("Hello, world")
+        self.write(render(self, 'home.html', {}))
+
+
+settings = {
+    "static_path": os.path.join(os.path.dirname(__file__), "static"),
+}
+
 
 application = tornado.web.Application([
+    (r'/static/(.*)', tornado.web.StaticFileHandler, {'path': settings['static_path']}),
     (r"/", MainHandler),
-])
+], **settings)
 
 if __name__ == "__main__":
     application.listen(os.environ.get('PORT', 8888))
