@@ -21,7 +21,7 @@ import tornado.ioloop
 import tornado.web
 import tornado.template
 
-template_dir = os.path.join(os.getcwd(), 'templates')
+template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 
 
 loader = tornado.template.Loader(template_dir)
