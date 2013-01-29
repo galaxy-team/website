@@ -21,20 +21,13 @@ import tornado.ioloop
 import tornado.web
 import tornado.template
 
-# import logging
-
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
-
-
 loader = tornado.template.Loader(template_dir)
-
 render = lambda handler, name, values: loader.load(name).generate(static_url=handler.static_url, **values)
 
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
-        print(os.getcwd())
-        print(os.listdir(template_dir))
         self.write(render(self, 'home.html', {}))
 
 
