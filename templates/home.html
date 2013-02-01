@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Galaxy{% end %}
 {% block content %}
-    <div class="enclosure space_below">
+    <div class="enclosure space_below" id="intro">
         <h4>
             Galaxy is a toolchain envisioned to be:
         </h4>
@@ -10,15 +10,25 @@
             <li>easy to use</li>
             <li>specification compliant</li>
             <li>written to take advantage of the new features in C++11 (and beyond)</li>
+            <li>pleasant API</li>
         </ul>
     </div>
 
-    <div class="enclosure space_below">
+    <div class="enclosure space_below" id="roadmap">
         <h4>Roadmap</h4>
         <ol>
-            <li><attr title="Jupiter">Assembler</attr></li>
-            <li><attr title="Saturn">Emulator</attr></li>
-            <li><attr title="Pluto">Linker</attr></li>
+            <li><span title="Jupiter">Assembler</span></li>
+            <li><span title="Saturn">Emulator</span></li>
+            <li><span title="Pluto">Linker</span></li>
         </ol>
+    </div>
+
+    <div class="enclosure space_below" id="contributors">
+        <h4>Contributors</h4>
+        <ul>
+            <li>mrout</li>
+            <li>Lord_DeathMatch</li>
+            <li>ThatOtherPerson</li>
+        </ul>
     </div>
 {% end %}
