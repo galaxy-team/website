@@ -15,7 +15,7 @@ def build_events(event_info):
     sentence_templates = {
         'PushEvent': 'Pushed to ',
         'CreateEvent': (
-            'Created a new {ref_type} on repository '),
+            'Created a new {ref_type}; '),
         'DeleteEvent': (
             'Deleted a {ref_type} on repository '),
         'PullRequestEvent': '{action} a pull request on '
@@ -40,10 +40,21 @@ def build_events(event_info):
 
     return end
 
+import datetime
+import time
+
 
 def get_events():
     end_events = []
-    for event in get_repo_events(repos.json()):
+    all_events = list(get_repo_events(repos.json()))
+    for event in all_events:
+        parsed_date = datetime.datetime.strptime(event['created_at'], "%Y-%m-%dT%H:%M:%SZ")
+        unix_time = time.mktime(parsed_date.timetuple())
+        event['created_at'] = unix_time
+
+    all_events = sorted(all_events, key=lambda x: x['created_at'])[::-1]
+
+    for event in all_events:
         event_dict = build_events(event)
         if event_dict:
             end_events.append(event_dict)
