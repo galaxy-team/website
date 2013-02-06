@@ -43,7 +43,7 @@ def build_events(event_info):
 
 def get_events():
     end_events = []
-    for event in repo_events:
+    for event in get_repo_events(repos.json()):
         event_dict = build_events(event)
         if event_dict:
             end_events.append(event_dict)
@@ -52,13 +52,13 @@ def get_events():
 
 logging.info('Setting up github event stream...')
 
-with open('debug.json', 'r') as fh:
-    repo_events = json.load(fh)
+# with open('debug.json', 'r') as fh:
+#     repo_events = json.load(fh)
 
 # setup
-# repos = authed_fetch('https://api.github.com/orgs/galaxy-team/repos')
+repos = authed_fetch('https://api.github.com/orgs/galaxy-team/repos')
 
-# logging.info(', '.join([repo['full_name'] for repo in repos.json()]))
+logging.info(', '.join([repo['full_name'] for repo in repos.json()]))
 
 # repo_events = list(
 #     get_repo_events(repos.json()))
