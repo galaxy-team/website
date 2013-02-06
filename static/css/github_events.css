@@ -1,0 +1,11 @@
+.github-follow-button {
+    float: right;
+    margin-top: -21px;
+    margin-right: -130px;
+    height: 20px;
+}
+
+.github-nick {
+    font-weight: bold;
+    color: black;
+}

@@ -1,0 +1,62 @@
+<link id="twitter-widget-css" rel="stylesheet" type="text/css" href="https://platform.twitter.com/embed/timeline.996256af577d2c3d78784b9bf8b648c6.default.css">
+<link rel="stylesheet" type="text/css" href="static/css/github_events.css">
+
+<div class="root timeline ltr not-touch twitter-timeline-rendered var-preview"
+dir="ltr">
+    <div class="timeline-header">
+        <h1 class="summary">
+            Events
+        </h1>
+
+        <iframe class="github-follow-button" src="/github-btn?user=galaxy-team&type=follow&count=true"
+        allowtransparency="true" frameborder="0" scrolling="0" height="20"></iframe>
+    </div>
+    <div role="alert" class="new-tweets-bar" aria-live="polite" aria-atomic="false"
+    aria-relevant="additions">
+        <button>
+            <i class="ic-top">
+            </i>
+            New Events
+        </button>
+    </div>
+    <div class="stream" style="height: 358px;">
+        <ol class="h-feed">
+            {% for event in events %}
+            <li class="tweet h-entry">
+                <!-- <a class="u-url permalink customisable-highlight" href="https://twitter.com/Lord_DeathMatch/statuses/277050816639139841"> -->
+                    <!-- <time pubdate="" class="dt-updated" datetime="2012-12-07T14:03:56+0000" title="Time posted: 07 Dec 2012, 14:03:56 (UTC)">07 Dec</time> -->
+                <!-- </a> -->
+                <div class="header h-card p-author">
+                    <a class="u-url profile" href="https://github.com/{{ event['info']['invoker'] }}">
+                        <img class="u-photo avatar" alt="" src="{{ event['info']['actor']['avatar_url'] }}" width="48" height="48">
+                        <span class="full-name">
+                            <span class="p-name customisable-highlight">@{{ event['info']['invoker'] }}</span>
+                        </span>
+                    </a>
+                </div>
+                <div class="e-entry-content">
+                    <p class="e-entry-title">
+                        {{ event['string'] }}
+                        <a href="http://github.com/{{ event['info']['repository'] }}" class="link customisable" title="http://github.com/{{ event['info']['repository'] }}">
+                            <span class="tco-hidden">http://</span>
+                            <span class="tco-display">github.com/{{ event['info']['repository'] }}</span>
+                            <span class="tco-hidden"></span>
+                            <span class="tco-ellipsis"><span class="tco-hidden">&nbsp;</span></span>
+                        </a>
+                    </p>
+                    <div class="detail-expander"><div class="detail-content"></div></div>
+                </div>
+                <div class="footer"></div>
+            </li>
+            {% end %}
+        </ol>
+        <button class="load-more customisable">
+            Load More
+        </button>
+        <p class="no-more-pane" role="alert">
+            There are no more Tweets in this stream.
+            <i class="ic-bird-flourish">
+            </i>
+        </p>
+    </div>
+</div>

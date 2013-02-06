@@ -20,6 +20,11 @@ import tornado
 import tornado.ioloop
 import tornado.web
 import tornado.template
+import tornado.options
+
+import sys
+sys.argv.append('--logging=INFO')
+tornado.options.parse_command_line()
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 loader = tornado.template.Loader(template_dir)
@@ -31,15 +36,28 @@ class MainHandler(tornado.web.RequestHandler):
         self.write(render(self, 'home.html', {}))
 
 
+class GithubButtonHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.write(render(self, 'github-btn.html', {}))
+
+from events import get_events
+
+
+class GitHubStream(tornado.web.RequestHandler):
+    def get(self):
+        self.write(render(self, 'github_stream.html', {'events': get_events()}))
+
 settings = {
     "static_path": os.path.join(os.path.dirname(__file__), "static"),
-    "debug": True
+    "debug": True,
 }
 
 
 application = tornado.web.Application([
     (r'/static/(.*)', tornado.web.StaticFileHandler, {'path': settings['static_path']}),
     (r"/", MainHandler),
+    (r"/github", GitHubStream),
+    (r"/github-btn", GithubButtonHandler)
 ], **settings)
 
 if __name__ == "__main__":
