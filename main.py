@@ -40,12 +40,19 @@ class GithubButtonHandler(tornado.web.RequestHandler):
     def get(self):
         self.write(render(self, 'github-btn.html', {}))
 
-from events import get_events
-
 
 class GitHubStream(tornado.web.RequestHandler):
     def get(self):
-        self.write(render(self, 'github_stream.html', {'events': get_events()}))
+        self.write(render(self, 'github_stream.html', {}))
+
+import events
+import json
+
+
+class StreamActual(tornado.web.RequestHandler):
+    def get(self):
+        self.write(json.dumps(list(
+            events.get_events())))
 
 settings = {
     "static_path": os.path.join(os.path.dirname(__file__), "static"),
@@ -57,7 +64,8 @@ application = tornado.web.Application([
     (r'/static/(.*)', tornado.web.StaticFileHandler, {'path': settings['static_path']}),
     (r"/", MainHandler),
     (r"/github", GitHubStream),
-    (r"/github-btn", GithubButtonHandler)
+    (r"/github-btn", GithubButtonHandler),
+    ('/stream', StreamActual)
 ], **settings)
 
 if __name__ == "__main__":

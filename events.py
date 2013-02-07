@@ -1,4 +1,3 @@
-import json
 import logging
 from utils import authed_fetch
 
@@ -33,12 +32,9 @@ def build_events(event_info):
 
     string = sentence_templates[event_info['type']].format(**event_info).title()
 
-    end = {
-        'string': string,
-        'info': event_info
-    }
+    event_info['string'] = string
 
-    return end
+    return event_info
 
 import datetime
 import time
