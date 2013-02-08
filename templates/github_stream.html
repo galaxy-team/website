@@ -47,19 +47,19 @@ dir="ltr">
 <script id="eventTemplate" type="text/x-jsrender">
     <li class="tweet h-entry">
         <div class="header h-card p-author">
-            <a class="u-url profile" href="https://github.com/{{!>invoker}}">
-                <img class="u-photo avatar" alt="" src="{{!>actor.avatar_url }}" width="48" height="48">
+            <a class="u-url profile" href="https://github.com/{{!>info.invoker}}">
+                <img class="u-photo avatar" alt="" src="{{!>info.avatar_url}}" width="48" height="48">
                 <span class="full-name">
-                    <span class="p-name customisable-highlight">@{{!>invoker}}</span>
+                    <span class="p-name customisable-highlight">@{{!>info.invoker}}</span>
                 </span>
             </a>
         </div>
         <div class="e-entry-content">
             <p class="e-entry-title">
                 {{!>string}}
-                <a href="http://github.com/{{!>repository}}" class="link customisable" title="http://github.com/{{!>repository}}">
+                <a href="http://github.com/{{!>info.repository}}" class="link customisable" title="http://github.com/{{!>info.repository}}">
                     <span class="tco-hidden">http://</span>
-                    <span class="tco-display">github.com/{{!>repository}}</span>
+                    <span class="tco-display">github.com/{{!>info.repository}}</span>
                     <span class="tco-hidden"></span>
                     <span class="tco-ellipsis"><span class="tco-hidden">&nbsp;</span></span>
                 </a>
@@ -69,3 +69,12 @@ dir="ltr">
         <div class="footer"></div>
     </li>
 </script>
+
+
+<!--<script id="eventTemplate" type="text/x-jsrender">
+    <img class="u-photo avatar" alt="" src="info.actor.avatar_url }}" width="48" height="48">
+        @{{!>info.invoker}} -> {{!>string}}
+    <a href="http://github.com/{{!>info.repository}}">
+        <span class="tco-display">github.com/{{!>info.repository}}</span>
+    </a>
+</script>-->

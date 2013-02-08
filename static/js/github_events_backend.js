@@ -1,19 +1,10 @@
-var build_html;
+// var get_events;
+// var timetuple;
+var interval_id;
 
 $(document).ready(function(){
-    function get_repo_events(repos){
-        all_events = [];
-        for (var i=0;i<repos.length;i++){
-            events = $.ajax('https://api.github.com/repos/' + repos[i].full_name + '/events');
-            for (var q=0;q<events.length;q++){
-                all_events.push(events[q]);
-            }
-        }
-        return all_events;
-    }
-
-
     function build_events(event_info){
+        // console.log(event_info);
         valid_events = [
             'PushEvent',
             'CreateEvent',
@@ -24,24 +15,32 @@ $(document).ready(function(){
         sentence_templates = {
             'PushEvent': 'Pushed to ',
             'CreateEvent': (
-                'Created a new {ref_type}; '),
+                'Created a new {{>ref_type}}; '),
             'DeleteEvent': (
-                'Deleted a {ref_type} on repository '),
-            'PullRequestEvent': '{action} a pull request on '
+                'Deleted a {{>ref_type}} on repository '),
+            'PullRequestEvent': '{{>action}} a pull request on '
         };
 
-        if (!valid_events.indexOf(event_info.type))
+        $.templates(sentence_templates);
+
+        if (sentence_templates[event_info.type] === undefined)
             return null;
 
         event_info.invoker = event_info.actor.login;
         event_info.repository = event_info.repo.name;
-        if (event_info.payload.indexOf('ref_type'))
+        if (event_info.payload.hasOwnProperty('ref_type'))
             event_info.ref_type = event_info.payload.ref_type;
 
-        if (event_info.payload.indexOf('action'))
+        event_info.avatar_url = event_info.actor.avatar_url;
+
+        if (event_info.payload.hasOwnProperty('action'))
             event_info.action = event_info.payload.action;
 
-        string = sentence_templates[event_info.type].format(event_info);
+
+        // only seems to work if i call it once before
+        $.render[event_info.type](event_info);
+
+        string = $.render[event_info.type](event_info);
 
         end = {
             'string': string,
@@ -51,56 +50,108 @@ $(document).ready(function(){
         return end;
     }
 
+    function get_repo_events(repos){
 
-    build_html = function (){
-        $.getJSON('/stream', function(data){
-            console.log('Got data :D');
-            console.log(data);
-            // Render the template with the event data and insert
-            // the rendered HTML under the "movieList" element
-            $('.h-feed').html(
-                $("#eventTemplate").render(data)
-            );
+        var all_events = [];
+        process = function(data){
+            for (var q=0;q<data.length;q++){
+                all_events.push(d.data[q]);
+            }
+        };
+
+        var fetches = [];
+        var num_fetches;
+
+
+        var dff = $.Deferred();
+        for (var i=0;i<repos.length;i++){
+            fetches.push($.getJSON(
+                'https://api.github.com/repos/' + repos[i].full_name + '/events?callback=?',
+                process));
+        }
+
+        fetches = $.when.apply($, fetches).promise();
+        fetches.done(function(result){
+            dff.resolve(result);
         });
-    };
 
-    build_html();
+        return dff.promise();
+    }
 
-    // def get_events():
-    //     end_events = []
-    //     all_events = list(get_repo_events(repos.json()))
-    //     for event in all_events:
-    //         parsed_date = datetime.datetime.strptime(event['created_at'], "%Y-%m-%dT%H:%M:%SZ")
-    //         unix_time = time.mktime(parsed_date.timetuple())
-    //         event['created_at'] = unix_time
-
-    //     all_events = sorted(all_events, key=lambda x: x['created_at'])[::-1]
-
-    //     for event in all_events:
-    //         event_dict = build_events(event)
-    //         if event_dict:
-    //             end_events.append(event_dict)
-    //     return end_events
+    function refresh_events(data){
+        $('.h-feed').html(
+            $("#eventTemplate").render(data)
+        );
+    }
 
 
-    // console.log('INFO; '+'Setting up github event stream...')
+    function get_events(repos){
+        var dff = $.Deferred();
 
-    // # with open('debug.json', 'r') as fh:
-    // #     repo_events = json.load(fh)
+        get_repo_events(repos).done(function(all_events){
+            all_events = all_events[0].data;
+            console.log(all_events.length + ' events');
 
-    // # setup
-    // repos = authed_fetch('https://api.github.com/orgs/galaxy-team/repos')
+            for (var i=0;i<all_events.length;i++){
+                timetuple = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})Z/.exec(all_events[i].created_at);
+                timetuple = timetuple.slice(1, 7);
 
-    // console.log('INFO; '+', '.join([repo['full_name'] for repo in repos.json()]))
+                unix_time = new Date(
+                    timetuple[0],
+                    timetuple[1],
+                    timetuple[2],
+                    timetuple[3],
+                    timetuple[4],
+                    timetuple[5]);
 
-    // # repo_events = list(
-    // #     get_repo_events(repos.json()))
-    // # with open('debug.json', 'w') as fh:
-    // #     json.dump(list(repo_events), fh)
+                all_events[i].created_at = unix_time.getTime();
+            }
 
-    // console.log('INFO; '+'Setup finished')
+            all_events = all_events.sort(function(x, y){return y.created_at - x.created_at;});
 
+            var end_events = [];
+            for (var q=0;q<all_events.length;q++){
+                event_dict = build_events(all_events[q]);
+                if (event_dict){
+                    end_events.push(event_dict);
+                }
+            }
+
+            dff.resolve(end_events);
+        });
+
+        return dff.promise();
+    }
+
+    // setup
+    console.log('Setting up github event stream...');
+
+    $.getJSON('https://api.github.com/orgs/galaxy-team/repos?callback=?', function(d){
+        if (d.data.message !== undefined){
+            if ((d.data.message).substring(0, 23) === "API Rate Limit Exceeded"){
+                throw Error('API Limit reached');
+            } else {
+                console.log("Message; " + d.data.message);
+            }
+        }
+        repos=d.data;
+
+        repo_names = [];
+        for(var z=0;z<repos.length;z++){
+            repo_names.push(repos[z].full_name);
+        }
+
+        console.log(repo_names);
+
+        function update_events(repos){
+            get_events(repos).done(function(result){
+                console.log('Setup finished');
+                refresh_events(result);
+                console.log('First iteration successful. Commencing execute on interval.');
+                interval_id = setInterval(update_events, 5 * 60 * 1000, repos);
+            });
+        }
+
+        update_events(repos);
+    });
 });
-
-
-

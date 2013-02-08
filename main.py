@@ -15,16 +15,33 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# setup the connection to the database before anything else
 import os
-import tornado
-import tornado.ioloop
-import tornado.web
-import tornado.template
-import tornado.options
+# from sqlalchemy import create_engine
+# from sqlalchemy import Table, Column, Integer, String, MetaData
+# engine = create_engine(os.environ.get(
+#     'DATABASE_URL', 'postgresql://postgres:pass@localhost:5432/'))
+# # conn = engine.connect()
+
+# metadata = MetaData(engine)
+# events_table = Table('events', metadata,
+#     Column('event_id', Integer, primary_key=True),
+#     Column('event_info', String),
+# )
+# # events.select()
+# metadata.create_all(engine)
+
 
 import sys
+import tornado
+import tornado.web
+import tornado.ioloop
+import tornado.options
+import tornado.template
+
 sys.argv.append('--logging=INFO')
 tornado.options.parse_command_line()
+
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 loader = tornado.template.Loader(template_dir)
@@ -45,14 +62,14 @@ class GitHubStream(tornado.web.RequestHandler):
     def get(self):
         self.write(render(self, 'github_stream.html', {}))
 
-import events
-import json
+# import events
+# import json
 
 
-class StreamActual(tornado.web.RequestHandler):
-    def get(self):
-        self.write(json.dumps(list(
-            events.get_events())))
+# class StreamActual(tornado.web.RequestHandler):
+#     def get(self):
+#         self.write(json.dumps(list(
+#             events.get_events())))
 
 settings = {
     "static_path": os.path.join(os.path.dirname(__file__), "static"),
@@ -65,9 +82,13 @@ application = tornado.web.Application([
     (r"/", MainHandler),
     (r"/github", GitHubStream),
     (r"/github-btn", GithubButtonHandler),
-    ('/stream', StreamActual)
+    # ('/stream', StreamActual)
 ], **settings)
 
-if __name__ == "__main__":
+
+def main():
     application.listen(os.environ.get('PORT', 8888))
     tornado.ioloop.IOLoop.instance().start()
+
+if __name__ == '__main__':
+    main()
