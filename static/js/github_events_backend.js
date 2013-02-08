@@ -54,6 +54,7 @@ $(document).ready(function(){
 
         var all_events = [];
         process = function(data){
+            console.log('Request returned');
             for (var q=0;q<data.length;q++){
                 all_events.push(d.data[q]);
             }
