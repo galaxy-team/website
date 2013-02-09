@@ -40,4 +40,4 @@ __pycache__
 
 
 # application specific
-database.db
+auth_data.json

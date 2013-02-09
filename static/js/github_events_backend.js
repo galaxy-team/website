@@ -52,17 +52,16 @@ $(document).ready(function(){
 
     function get_repo_events(repos){
 
-        var all_events = [];
         process = function(data){
+            var all_events = [];
             console.log('Request returned');
             for (var q=0;q<data.length;q++){
                 all_events.push(d.data[q]);
             }
+            return all_events;
         };
 
         var fetches = [];
-        var num_fetches;
-
 
         var dff = $.Deferred();
         for (var i=0;i<repos.length;i++){
@@ -72,8 +71,14 @@ $(document).ready(function(){
         }
 
         fetches = $.when.apply($, fetches).promise();
-        fetches.done(function(result){
-            dff.resolve(result);
+        fetches.done(function(){
+            var all_events = [];
+            for (var r=0;r<arguments.length;r++){
+                for (var e=0;e<arguments[r][0].data.length;e++){
+                    all_events.push(arguments[r][0].data[e]);
+                }
+            }
+            dff.resolve(all_events);
         });
 
         return dff.promise();
@@ -90,7 +95,6 @@ $(document).ready(function(){
         var dff = $.Deferred();
 
         get_repo_events(repos).done(function(all_events){
-            all_events = all_events[0].data;
             console.log(all_events.length + ' events');
 
             for (var i=0;i<all_events.length;i++){
@@ -145,14 +149,18 @@ $(document).ready(function(){
         console.log(repo_names);
 
         function update_events(repos){
+            var dff = $.Deferred();
             get_events(repos).done(function(result){
                 console.log('Setup finished');
                 refresh_events(result);
-                console.log('First iteration successful. Commencing execute on interval.');
-                interval_id = setInterval(update_events, 5 * 60 * 1000, repos);
+                dff.resolve();
             });
+            return dff.promise();
         }
 
-        update_events(repos);
+        update_events(repos).done(function(){
+            console.log('First iteration successful. Commencing execute on interval.');
+            interval_id = setInterval(update_events, 5 * 60 * 1000, repos);
+        });
     });
 });
