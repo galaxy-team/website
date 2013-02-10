@@ -1,18 +1,23 @@
-// var get_events;
-// var timetuple;
+var console;
+var document;
+var $;
+var window;
+// var setInterval;
 var interval_id;
 
 $(document).ready(function(){
+    "use strict";
+
     function build_events(event_info){
         // console.log(event_info);
-        valid_events = [
+        var valid_events = [
             'PushEvent',
             'CreateEvent',
             'DeleteEvent',
             'PullRequestEvent'
         ];
 
-        sentence_templates = {
+        var sentence_templates = {
             'PushEvent': 'Pushed to ',
             'CreateEvent': (
                 'Created a new {{>ref_type}}; '),
@@ -40,9 +45,9 @@ $(document).ready(function(){
         // only seems to work if i call it once before
         $.render[event_info.type](event_info);
 
-        string = $.render[event_info.type](event_info);
+        var string = $.render[event_info.type](event_info);
 
-        end = {
+        var end = {
             'string': string,
             'info': event_info
         };
@@ -52,11 +57,11 @@ $(document).ready(function(){
 
     function get_repo_events(repos){
 
-        process = function(data){
+        var process = function(data){
             var all_events = [];
             console.log('Request returned');
             for (var q=0;q<data.length;q++){
-                all_events.push(d.data[q]);
+                all_events.push(data.data[q]);
             }
             return all_events;
         };
@@ -98,10 +103,10 @@ $(document).ready(function(){
             console.log(all_events.length + ' events');
 
             for (var i=0;i<all_events.length;i++){
-                timetuple = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})Z/.exec(all_events[i].created_at);
+                var timetuple = /(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})Z/.exec(all_events[i].created_at);
                 timetuple = timetuple.slice(1, 7);
 
-                unix_time = new Date(
+                var unix_time = new Date(
                     timetuple[0],
                     timetuple[1],
                     timetuple[2],
@@ -116,7 +121,7 @@ $(document).ready(function(){
 
             var end_events = [];
             for (var q=0;q<all_events.length;q++){
-                event_dict = build_events(all_events[q]);
+                var event_dict = build_events(all_events[q]);
                 if (event_dict){
                     end_events.push(event_dict);
                 }
@@ -134,14 +139,14 @@ $(document).ready(function(){
     $.getJSON('https://api.github.com/orgs/galaxy-team/repos?callback=?', function(d){
         if (d.data.message !== undefined){
             if ((d.data.message).substring(0, 23) === "API Rate Limit Exceeded"){
-                throw Error('API Limit reached');
+                throw new Error('API Limit reached');
             } else {
                 console.log("Message; " + d.data.message);
             }
         }
-        repos=d.data;
+        var repos = d.data;
 
-        repo_names = [];
+        var repo_names = [];
         for(var z=0;z<repos.length;z++){
             repo_names.push(repos[z].full_name);
         }
@@ -160,7 +165,7 @@ $(document).ready(function(){
 
         update_events(repos).done(function(){
             console.log('First iteration successful. Commencing execute on interval.');
-            interval_id = setInterval(update_events, 5 * 60 * 1000, repos);
+            interval_id = window.setInterval(update_events, 5 * 60 * 1000, repos);
         });
     });
 });
