@@ -17,27 +17,21 @@
 
 # setup the connection to the database before anything else
 import os
-# from sqlalchemy import create_engine
-# from sqlalchemy import Table, Column, Integer, String, MetaData
-# engine = create_engine(os.environ.get(
-#     'DATABASE_URL', 'postgresql://postgres:pass@localhost:5432/'))
-# # conn = engine.connect()
 
-# metadata = MetaData(engine)
-# events_table = Table('events', metadata,
-#     Column('event_id', Integer, primary_key=True),
-#     Column('event_info', String),
-# )
-# # events.select()
-# metadata.create_all(engine)
+os.environ['NEW_RELIC_LICENSE_KEY'] = '12b902d9b0341674b9965e99319ce90eecbdbf89'
 
+import newrelic.agent
+newrelic.agent.initialize(os.path.join(
+    os.getcwd(), 'newrelic.ini'))
 
 import sys
 import tornado
 import tornado.web
+import tornado.wsgi
 import tornado.ioloop
 import tornado.options
 import tornado.template
+import tornado.httpserver
 
 sys.argv.append('--logging=INFO')
 tornado.options.parse_command_line()
@@ -62,32 +56,24 @@ class GitHubStream(tornado.web.RequestHandler):
     def get(self):
         self.write(render(self, 'github_stream.html', {}))
 
-# import events
-# import json
-
-
-# class StreamActual(tornado.web.RequestHandler):
-#     def get(self):
-#         self.write(json.dumps(list(
-#             events.get_events())))
-
 settings = {
     "static_path": os.path.join(os.path.dirname(__file__), "static"),
     "debug": True,
 }
 
 
-application = tornado.web.Application([
+application = tornado.wsgi.WSGIApplication([
     (r'/static/(.*)', tornado.web.StaticFileHandler, {'path': settings['static_path']}),
     (r"/", MainHandler),
     (r"/github", GitHubStream),
     (r"/github-btn", GithubButtonHandler),
-    # ('/stream', StreamActual)
 ], **settings)
 
 
 def main():
-    application.listen(os.environ.get('PORT', 8888))
+    http_server = tornado.httpserver.HTTPServer(
+        tornado.wsgi.WSGIContainer(application))
+    http_server.listen(os.environ.get('PORT', 8888))
     tornado.ioloop.IOLoop.instance().start()
 
 if __name__ == '__main__':
