@@ -18,11 +18,10 @@
 # setup the connection to the database before anything else
 import os
 
-os.environ['NEW_RELIC_LICENSE_KEY'] = '12b902d9b0341674b9965e99319ce90eecbdbf89'
+# os.environ['NEW_RELIC_LICENSE_KEY'] = '12b902d9b0341674b9965e99319ce90eecbdbf89'
 
 import newrelic.agent
-newrelic.agent.initialize(os.path.join(
-    os.getcwd(), 'newrelic.ini'))
+newrelic.agent.initialize('newrelic.ini')
 
 import sys
 import tornado
@@ -37,28 +36,24 @@ sys.argv.append('--logging=INFO')
 tornado.options.parse_command_line()
 
 
-template_dir = os.path.join(os.path.dirname(__file__), 'templates')
-loader = tornado.template.Loader(template_dir)
-render = lambda handler, name, values: loader.load(name).generate(static_url=handler.static_url, **values)
-
-
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
-        self.write(render(self, 'home.html', {}))
+        self.render(template_name='home.html')
 
 
 class GithubButtonHandler(tornado.web.RequestHandler):
     def get(self):
-        self.write(render(self, 'github-btn.html', {}))
+        self.render('github-btn.html')
 
 
 class GitHubStream(tornado.web.RequestHandler):
     def get(self):
-        self.write(render(self, 'github_stream.html', {}))
+        self.render('github_stream.html')
 
 settings = {
     "static_path": os.path.join(os.path.dirname(__file__), "static"),
     "debug": True,
+    "template_path": os.path.join(os.path.dirname(__file__), 'templates')
 }
 
 

@@ -165,7 +165,7 @@ class ValueMetrics(object):
 
         """
 
-        return self.__stats_table.iteritems()
+        return self.__stats_table.items()
 
 class SlowSqlStats(list):
 
@@ -553,11 +553,11 @@ class StatsEngine(object):
         if self.__settings.debug.log_raw_metric_data:
             _logger.info('Raw metric data for harvest of %r is %r.',
                     self.__settings.app_name,
-                    list(self.__stats_table.iteritems()))
+                    list(self.__stats_table.items()))
 
         if normalizer is not None:
-            for key, value in self.__stats_table.iteritems():
-                key = (normalizer(key[0])[0] , key[1])
+            for key, value in self.__stats_table.items():
+                key = (normalizer(key[0])[0], key[1])
                 stats = normalized_stats.get(key)
                 if stats is None:
                     normalized_stats[key] = copy.copy(value)
@@ -569,9 +569,9 @@ class StatsEngine(object):
         if self.__settings.debug.log_normalized_metric_data:
             _logger.info('Normalized metric data for harvest of %r is %r.',
                     self.__settings.app_name,
-                    list(normalized_stats.iteritems()))
+                    list(normalized_stats.items()))
 
-        for key, value in normalized_stats.iteritems():
+        for key, value in normalized_stats.items():
             if key not in self.__metric_ids:
                 key = dict(name=key[0], scope=key[1])
             else:
@@ -884,7 +884,7 @@ class StatsEngine(object):
         # Merge back data into any new data which has been
         # accumulated.
 
-        for key, other in snapshot.__stats_table.iteritems():
+        for key, other in snapshot.__stats_table.items():
             stats = self.__stats_table.get(key)
             if not stats:
                 self.__stats_table[key] = copy.copy(other)
@@ -921,7 +921,7 @@ class StatsEngine(object):
 
         if merge_sql:
             maximum = settings.agent_limits.slow_sql_data
-            for key, other in snapshot.__sql_stats_table.iteritems():
+            for key, other in snapshot.__sql_stats_table.items():
                 stats = self.__sql_stats_table.get(key)
                 if not stats:
                     if len(self.__sql_stats_table) < maximum:

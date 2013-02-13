@@ -49,8 +49,8 @@ class RulesEngine(object):
         # convert URL to Unicode as Latin-1 explicitly
         # to avoid problems with illegal characters.
 
-        if type(string) == type(''):
-            string = string.decode('Latin-1')
+        # if type(string) == type(''):
+        #     string = string.decode('Latin-1')
 
         final_string = string
         ignore = False

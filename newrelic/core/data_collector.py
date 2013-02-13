@@ -497,7 +497,8 @@ class ApplicationSession(object):
             config['pool_connections'] = 1
             config['pool_maxsize'] = 1
 
-            self._requests_session = requests.session(config=config)
+            self._requests_session = requests.session()
+            self._requests_session.headers.update(**config)
 
         return self._requests_session
 

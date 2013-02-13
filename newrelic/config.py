@@ -183,7 +183,7 @@ def _process_setting(section, option, getter, mapper):
         # object. Walk the object path and assign it.
 
         target = _settings
-        fields = string.split(option, '.', 1)
+        fields = option.split('.', 1)
 
         while True:
             if len(fields) == 1:
@@ -191,7 +191,7 @@ def _process_setting(section, option, getter, mapper):
                 break
             else:
                 target = getattr(target, fields[0])
-                fields = string.split(fields[1], '.', 1)
+                fields = fields[1].split('.', 1)
 
         # Cache the configuration so can be dumped out to
         # log file when whole main configuraiton has been
