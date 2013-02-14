@@ -15,14 +15,10 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# setup the connection to the database before anything else
-import os
-
-# os.environ['NEW_RELIC_LICENSE_KEY'] = '12b902d9b0341674b9965e99319ce90eecbdbf89'
-
 import newrelic.agent
 newrelic.agent.initialize('newrelic.ini')
 
+import os
 import sys
 import tornado
 import tornado.web
@@ -52,8 +48,8 @@ class GitHubStream(tornado.web.RequestHandler):
 
 settings = {
     "static_path": os.path.join(os.path.dirname(__file__), "static"),
+    "template_path": os.path.join(os.path.dirname(__file__), 'templates'),
     "debug": True,
-    "template_path": os.path.join(os.path.dirname(__file__), 'templates')
 }
 
 

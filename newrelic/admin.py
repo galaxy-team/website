@@ -276,7 +276,7 @@ def validate_config(args):
     _iterable = _wsgi_application(_environ, _start_response)
     _iterable.close()
 
-    #_background_task()
+    # _background_task()
 
 
 @command('local-config', 'config_file [log_file]',

@@ -12,8 +12,9 @@ import time
 import zlib
 
 import requests
-import json as simplejson
+# import json as simplejson
 # import newrelic.lib.requests as requests
+import simplejson
 # import newrelic.lib.simplejson as simplejson
 
 from newrelic import version
@@ -180,9 +181,9 @@ def send_request(session, url, method, license_key, agent_run_id=None,
 
     try:
         with InternalTrace('Supportability/Collector/JSON/Encode/%s' % method):
-            data = simplejson.dumps(payload)
-                # , ensure_ascii=True,
-                #     default=lambda o: list(iter(o)))
+            data = simplejson.dumps(payload,
+                ensure_ascii=True,
+                default=lambda o: list(iter(o)))
     except Exception as exc:
         _logger.error('Error encoding data for JSON payload for method %r '
                 'with payload of %r. Exception which occurred was %r. '

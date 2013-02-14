@@ -13,13 +13,14 @@ import logging
 import operator
 import zlib
 
-import json as simplejson
+import simplejson
 # import newrelic.lib.simplejson as simplejson
 
 from newrelic.core.internal_metrics import (internal_trace, InternalTrace,
         internal_metric)
 
 _logger = logging.getLogger(__name__)
+
 
 class ApdexStats(list):
 
@@ -61,6 +62,7 @@ class ApdexStats(list):
         self[3] = ((self[0] or self[1] or self[2]) and
                 min(self[3], metric.apdex_t) or metric.apdex_t)
         self[4] = max(self[4], metric.apdex_t)
+
 
 class TimeStats(list):
 
@@ -133,6 +135,7 @@ class TimeStats(list):
 
         self[0] += 1
 
+
 class ValueMetrics(object):
 
     """Table for collection a set of value metrics.
@@ -166,6 +169,7 @@ class ValueMetrics(object):
         """
 
         return self.__stats_table.items()
+
 
 class SlowSqlStats(list):
 
@@ -209,6 +213,7 @@ class SlowSqlStats(list):
         # minimum call time is dependent on initial value.
 
         self[0] += 1
+
 
 class StatsEngine(object):
 
@@ -688,16 +693,17 @@ class StatsEngine(object):
             with InternalTrace('Supportability/StatsEngine/JSON/Encode/'
                                'transaction_sample_data'):
 
-                json_data = simplejson.dumps(data, ensure_ascii=True,
-                        encoding='Latin-1', namedtuple_as_object=False,
-                        default=lambda o: list(iter(o)))
+                json_data = simplejson.dumps(data,
+                    ensure_ascii=True,
+                    encoding='Latin-1', namedtuple_as_object=False,
+                    default=lambda o: list(iter(o)))
 
             internal_metric('Supportability/StatsEngine/ZLIB/Bytes/'
                             'transaction_sample_data', len(json_data))
 
             with InternalTrace('Supportability/StatsEngine/ZLIB/Compress/'
                                'transaction_sample_data'):
-                zlib_data = zlib.compress(json_data)
+                zlib_data = zlib.compress(bytes(json_data, 'UTF-8'))
 
             with InternalTrace('Supportability/StatsEngine/BASE64/Encode/'
                                'transaction_sample_data'):
